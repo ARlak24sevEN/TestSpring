@@ -4,7 +4,10 @@ import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.FileException;
 import com.example.backend.exception.UserException;
+import com.example.backend.mapper.UserMapper;
+import com.example.backend.model.MLoginRequest;
 import com.example.backend.model.MRegisterRequest;
+import com.example.backend.model.MRegisterResponse;
 import com.example.backend.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,42 +15,47 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserBusiness {
 
     private final UserService userService;
 
-    public UserBusiness(UserService userService) {
+    private final UserMapper userMapper;
+
+    public UserBusiness(UserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
-    public User register(MRegisterRequest request)throws BaseException{
-        User user = userService.create(request.getEmail(),request.getPassword(),request.getName());
-        //TODO:mapper
-        return user;
+    public String login(MLoginRequest request) throws BaseException {
+        //ValidateRequest
 
-        //test tag
+        //Varify Database
+        Optional<User> opt = userService.findByEmail(request.getEmail());
 
-        /* Ep1
-    public String register(MRegisterRequest request) throws BaseException {
+        if (opt.isEmpty()){
+            // throw login fail, email not found
+            throw UserException.loginFailEmailNotFound();
+        }
+        User user = opt.get();
 
-        //validate request
-        if (request == null) {
-            throw UserException.requestNull();
+        if (!userService.mathPassword(request.getPassword(),user.getPassword())){
+            // throw password fail, password incorect
+            throw  UserException.loginFailPasswordIncorrect();
         }
 
-        //validate email
-        if (Objects.isNull(request.getEmail())) {
-            throw UserException.emailNull();
-        }
+        //TODO:generate JWT
+        //geberate token to use backen
+        String token ="jwt todo token";
+        return token;
+    }
 
-        //validate ....
+    public MRegisterResponse register(MRegisterRequest request) throws BaseException {
+        User user = userService.create(request.getEmail(), request.getPassword(), request.getName());
 
-
-        return "";
-    }*/
+        return userMapper.toRegisterResponse(user);
     }
 
     public String uploadProfilePicture(MultipartFile file) throws BaseException {
