@@ -30,12 +30,12 @@ class TestUserService {
         User user = userService.create(TestCreateData.email, TestCreateData.password, TestCreateData.name);
         //check not null
         Assertions.assertNotNull(user);
-        Assertions.assertNotNull(user.getID());
+        Assertions.assertNotNull(user.getId());
 
         //check equals
 
         Assertions.assertEquals(TestCreateData.email,user.getEmail());
-        boolean isMatched = userService.mathPassword(TestCreateData.password,user.getPassword());
+        boolean isMatched = userService.matchPassword(TestCreateData.password,user.getPassword());
         Assertions.assertTrue(isMatched);
         Assertions.assertEquals(TestCreateData.name,user.getName());
     }
@@ -45,13 +45,17 @@ class TestUserService {
     void testUpdate() throws UserException {
         Optional<User> opt = userService.findByEmail(TestCreateData.email);
         Assertions.assertTrue(opt.isPresent());
+
         User user = opt.get();
-        //user.setName(TestUpdateData.name);
 
-       User updateUser = userService.updateName(user.getID(), TestUpdateData.name);
 
-        Assertions.assertNotNull(updateUser);
-        Assertions.assertEquals(TestUpdateData.name,updateUser.getName());
+        //update data in database => user.setName(TestUpdateData.name);
+
+        User updatedUser = userService.updateName(user.getId(), TestUpdateData.name);
+
+        Assertions.assertNotNull(updatedUser);
+        Assertions.assertEquals(TestUpdateData.name,updatedUser.getName());
+        //
     }
 
     @Order(3)
@@ -60,7 +64,7 @@ class TestUserService {
         Optional<User> opt = userService.findByEmail(TestCreateData.email);
         Assertions.assertTrue(opt.isPresent());
         User user = opt.get();
-        //userService.deleteById(user.getID());
+        userService.deleteById(user.getId());
 
         Optional <User> optDelete =  userService.findByEmail(TestCreateData.email);
         Assertions.assertTrue(optDelete.isEmpty());
@@ -68,9 +72,10 @@ class TestUserService {
 
     interface TestCreateData {
         String email ="arlak@gmail.com";
-        String name = "Arlak";
         String password = "1234";
-   }
+        String name = "Arlak";
+
+    }
 
     interface TestUpdateData {
         String name = "Nadia";

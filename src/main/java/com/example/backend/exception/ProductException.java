@@ -5,7 +5,7 @@ public class ProductException extends BaseException{
         super("product"+code);
     }
 
-    public static ProductException notfound(){
+    public static ProductException notFound(){
        return new ProductException("not found");
     }
 }

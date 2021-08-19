@@ -17,7 +17,7 @@ public class FileException extends BaseException {
     }
 
     //file unsupport
-    public static FileException unsupport() {
+    public static FileException unsupported() {
         return new FileException("unsupprt.file.type");
     }
 

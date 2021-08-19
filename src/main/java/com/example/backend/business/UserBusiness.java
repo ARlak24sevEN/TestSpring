@@ -41,7 +41,7 @@ public class UserBusiness {
         }
         User user = opt.get();
 
-        if (!userService.mathPassword(request.getPassword(),user.getPassword())){
+        if (!userService.matchPassword(request.getPassword(),user.getPassword())){
             // throw password fail, password incorect
             throw  UserException.loginFailPasswordIncorrect();
         }
@@ -71,13 +71,13 @@ public class UserBusiness {
         String contentType = file.getContentType();
         if (contentType == null) {
             //throw error
-            throw FileException.unsupport();
+            throw FileException.unsupported();
         }
 
         List<String> supportType = Arrays.asList("image/jpeg", "image/png");
         if (!supportType.contains(contentType)) {
             //throw error(unsupport)
-            throw FileException.unsupport();
+            throw FileException.unsupported();
         }
 
         //Get file

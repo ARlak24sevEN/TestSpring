@@ -1,12 +1,10 @@
 package com.example.backend.api;
 
 import com.example.backend.business.UserBusiness;
-import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.MLoginRequest;
 import com.example.backend.model.MRegisterRequest;
 import com.example.backend.model.MRegisterResponse;
-import com.example.backend.model.TestResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

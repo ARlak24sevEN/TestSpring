@@ -23,7 +23,7 @@ public class UserException extends BaseException {
         return new UserException("register.email.null");
     }
 
-    public static UserException createEmailDuplocated() {
+    public static UserException createEmailDuplicated() {
         return new UserException("register.email.duplocated");
     }
 

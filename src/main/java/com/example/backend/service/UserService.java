@@ -10,51 +10,57 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
 
+
 @Service
 public class UserService {
 
     private final UserRepository repository;
 
-    private  final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<User> findByEmail(String email){
+    public Optional<User> findByEmail(String email) {
         return repository.findByEmail(email);
     }
 
     //update function
 
     /*beware overwrite
+
     public User update(User user){
         return repository.save(user);
     }*/
+    public User update(User user) {
+        return repository.save(user);
+    }
 
-    public User updateName(String id,String name) throws UserException {
-        Optional<User> opt = repository.findByEmail(id);
-        if (opt.isEmpty()){
+    public User updateName(String id, String name) throws UserException {
+        Optional<User> opt = repository.findById(id);
+        if (opt.isEmpty()) {
             throw UserException.notFound();
         }
 
         User user = opt.get();
         user.setName(name);
-        return  repository.save(user);
+        return repository.save(user);
     }
 
     //delete
 
-    public void deleteById(String id){
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 
 
     //check password before login
-    public boolean mathPassword(String rawPassword, String encodedPassword){
-        return  passwordEncoder.matches(rawPassword,encodedPassword);
+    public boolean matchPassword(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
+
     public User create(String email, String password, String name) throws BaseException {
 
         //validate
@@ -73,7 +79,7 @@ public class UserService {
 
         //varify
         if (repository.existsByEmail(email)) {
-            throw UserException.createEmailDuplocated();
+            throw UserException.createEmailDuplicated();
         }
 
 

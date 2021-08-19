@@ -1,9 +1,11 @@
 package com.example.backend.entity;
 
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+@Data
 @MappedSuperclass
 public class BaseEntity {
 

@@ -12,7 +12,7 @@ public class ProductBusiness {
         //Todo: Get Data from Database
 
         if (Objects.equals("1234",id)){
-            throw ProductException.notfound();
+            throw ProductException.notFound();
         }
             return id;
     }
