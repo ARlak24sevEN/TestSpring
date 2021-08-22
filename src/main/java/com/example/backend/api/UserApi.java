@@ -30,15 +30,22 @@ public class UserApi {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping
-    @RequestMapping("/register")
+    @GetMapping("/refresh-token")
+    public ResponseEntity<String> refreshToken() throws BaseException {
+        String responsse = business.refreshToken();
+        return ResponseEntity.ok(responsse);
+    }
+
+
+    @PostMapping("/register")
+    //@RequestMapping("/register")
     public ResponseEntity<MRegisterResponse> register(@RequestBody MRegisterRequest request) throws BaseException {
         MRegisterResponse response = business.register(request);
         return ResponseEntity.ok(response);
     }
 
     //upload file
-    @PostMapping
+    @PostMapping("/upload-profile")
     public ResponseEntity<String> uploadProfilePicture(@RequestPart MultipartFile file) throws BaseException {
         String response = business.uploadProfilePicture(file);
         return ResponseEntity.ok(response);

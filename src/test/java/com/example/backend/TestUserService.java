@@ -131,7 +131,7 @@ class TestUserService {
         Assertions.assertEquals(2,addresses.size());
 
         userService.deleteById(user.getId());
-        
+
         Optional<User> optDelete = userService.findByEmail(TestCreateData.email);
         Assertions.assertTrue(optDelete.isEmpty());
     }

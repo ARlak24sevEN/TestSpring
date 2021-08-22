@@ -8,7 +8,12 @@ import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.MLoginRequest;
 import com.example.backend.model.MRegisterRequest;
 import com.example.backend.model.MRegisterResponse;
+import com.example.backend.service.TokenService;
 import com.example.backend.service.UserService;
+import com.example.backend.util.SecurityUtil;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,12 +26,13 @@ import java.util.Optional;
 public class UserBusiness {
 
     private final UserService userService;
-
     private final UserMapper userMapper;
+    private final TokenService tokenService;
 
-    public UserBusiness(UserService userService, UserMapper userMapper) {
+    public UserBusiness(UserService userService, UserMapper userMapper, TokenService tokenService) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.tokenService = tokenService;
     }
 
     public String login(MLoginRequest request) throws BaseException {
@@ -48,8 +54,23 @@ public class UserBusiness {
 
         //TODO:generate JWT
         //geberate token to use backen
-        String token ="jwt todo token";
-        return token;
+        return tokenService.tokenize(user);
+    }
+
+    public String refreshToken() throws BaseException {
+        Optional<String> opt = SecurityUtil.getCurrentUserId();
+        if (opt.isEmpty()){
+            throw UserException.unauthorizeed();
+        }
+
+        String userId = opt.get();
+
+        Optional<User> optUser = userService.findById(userId);
+        if (optUser.isEmpty()){
+            throw UserException.notFound();
+        }
+        User user = optUser.get();
+        return tokenService.tokenize(user);
     }
 
     public MRegisterResponse register(MRegisterRequest request) throws BaseException {

@@ -11,6 +11,11 @@ public class UserException extends BaseException {
         return new UserException("register.request.null");
     }
 
+    //unauthorizeed
+    public static UserException unauthorizeed() {
+        return new UserException("unauthorizeed");
+    }
+
     //user.register.email.null
     public static UserException emailNull() {
         return new UserException("register.email.null");
