@@ -1,4 +1,15 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: smileroom28806
+    password: oegvtgoowlpxptuy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,3 +29,6 @@ app:
   token:
     secret: ArlakMySecretIsTheBest
     issuer: BackenService
+
+  email:
+    from: smileroom28806@gmail.com
