@@ -35,6 +35,14 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
+
+        <!-- web secket-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+
         <!--connect db-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
